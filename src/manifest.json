@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
-    "name": "Watch Timer",
+    "name": "Watch Timer for Youtube and Netflix",
     "version": "1.0",
-    "description": "Youtube and Netflix time logging tool",
+    "description": "Youtube and Netflix watch time logging tool",
     "content_scripts": [{
         "matches": [
             "*://*.youtube.com/*",
