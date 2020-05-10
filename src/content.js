@@ -1,9 +1,14 @@
+let data = {}
+
+chrome.storage.sync.get("watch-time", function(items){
+    if (items["watch-time"]) data = items['watch-time']
+});
+
 class BaseTimer {
-    constructor(name = '', hours = 0, mins = 0, secs = 0) {
+    constructor(hours = 0, mins = 0, secs = 0) {
         this.hours = hours
         this.mins = mins
         this.secs = secs
-        this.name = name
     }
 
     getTimestring = () => `${this.hours}h ${this.mins}m ${this.secs}s`
@@ -18,7 +23,7 @@ class BaseTimer {
 
     addMinute = () => {
         this.mins++
-        if (mins === 60) {
+        if (this.mins === 60) {
             this.addHour()
             this.mins = 0
         }
@@ -39,21 +44,36 @@ class BaseTimer {
     getHours = () => this.hours
 }
 
-const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
-let timer;
+const regExp = /^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/+/gm
+let url;
 
-switch (window.location.href.match(regExp)) {
+switch (regExp.test(window.location.href)) {
     case true:
-        timer = new BaseTimer('youtube')
+        url = 'youtube'
         break;
     default:
-        timer = new BaseTimer('netflix')
+        url = 'netflix'
         break;
 }
 
-setInterval(function() {
-    timer.addSecond()
+let timer = data[url] || new BaseTimer()
+let seconds = 0
 
-    console.log(timer.getTimestring());
-}, 1000)
+function cb() {
+    seconds++
+    if (seconds === 60) {
+        timer.addMinute()
+        data[url] = timer
+        chrome.storage.sync.set({ "watch-time": data });
+        seconds = 0
+    }
+}
 
+let interval = setInterval(cb, 1000)
+if (document.hidden) clearInterval(interval)
+document.addEventListener('visibilitychange', function(){
+    if (document.hidden) clearInterval(interval)
+    else {
+        interval = setInterval(cb, 1000)
+    }
+})
