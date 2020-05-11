@@ -29,13 +29,15 @@ $(function() {
             for (let i = 0; i < 7; i++) {
                 day = new Date(tmp.setDate(tmp.getDate() - i)).toDateString()
 
-                if (data[day].youtube) {
-                    youtube.hours += data[day].youtube.hours
-                    youtube.mins += data[day].youtube.mins
-                }
-                if (data[day].netflix) {
-                    netflix.hours += data[day].netflix.hours
-                    netflix.mins += data[day].netflix.mins
+                if (data[day]) {
+                    if (data[day].youtube) {
+                        youtube.hours += data[day].youtube.hours
+                        youtube.mins += data[day].youtube.mins
+                    }
+                    if (data[day].netflix) {
+                        netflix.hours += data[day].netflix.hours
+                        netflix.mins += data[day].netflix.mins
+                    }
                 }
                 if (day.substring(0, 3) === 'Sun') break;
             };
@@ -43,11 +45,20 @@ $(function() {
             $('#netflix-timer').text(`${netflix.hours}h ${netflix.mins}m`)
         } else {
             day = new Date().toDateString()
-            if (data[day].youtube) {
-                $('#youtube-timer').text(`${data[day].youtube.hours}h ${data[day].youtube.mins}m`)
-            }
-            if (data[day].netflix) {
-                $('#netflix-timer').text(`${data[day].netflix.hours}h ${data[day].netflix.mins}m`)
+            if (data[day]) {
+                if (data[day].youtube) {
+                    $('#youtube-timer').text(`${data[day].youtube.hours}h ${data[day].youtube.mins}m`)
+                } else {
+                    $('#youtube-timer').text('0h 0m')
+                }
+                if (data[day].netflix) {
+                    $('#netflix-timer').text(`${data[day].netflix.hours}h ${data[day].netflix.mins}m`)
+                } else {
+                    $('#netflix-timer').text('0h 0m')
+                }
+            } else {
+                $('#netflix-timer').text('0h 0m')
+                $('#youtube-timer').text('0h 0m')
             }
         }
     })
