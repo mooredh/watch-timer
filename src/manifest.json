@@ -8,7 +8,7 @@
             "*://*.youtube.com/*",
             "*://*.netflix.com/*"
         ],
-        "js": ["jquery-3.5.1.slim.min.js", "content.js", "index.js"],
+        "js": ["content.js", "index.js"],
         "run_at": "document_start"
     }],
     "icons": {
