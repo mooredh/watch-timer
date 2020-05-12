@@ -44,6 +44,11 @@ window.onload = function() {
                     }
                     if (day.substring(0, 3) === 'Sun') break;
                 };
+
+                youtube.hours += Math.floor(youtube.mins / 60)
+                youtube.mins = youtube.mins % 60
+                netflix.hours += Math.floor(netflix.mins / 60)
+                netflix.mins = netflix.mins % 60
                 document.getElementById('youtube-timer').innerHTML = `${youtube.hours}h ${youtube.mins}m`
                 document.getElementById('netflix-timer').innerHTML = `${netflix.hours}h ${netflix.mins}m`
             } else {
