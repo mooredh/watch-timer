@@ -27,9 +27,9 @@ window.onload = function() {
             if (active === 'this week') {
                 let youtube = { hours: 0, mins: 0 }
                 let netflix = { hours: 0, mins: 0 }
-                let tmp = new Date()
 
                 for (let i = 0; i < 7; i++) {
+                    let tmp = new Date()
                     day = new Date(tmp.setDate(tmp.getDate() - i)).toDateString()
 
                     if (data[day]) {
